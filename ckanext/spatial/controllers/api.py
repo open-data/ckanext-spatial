@@ -49,6 +49,41 @@ class ApiController(BaseApiController):
                   .filter(PackageExtent.the_geom.intersects(input_geometry)) \
                   .filter(Package.state==u'active')
 
+        if request.params.get('format','') == 'geojson':
+            return self._output_geojson(extents)
+        else:
+
+            ids = [extent.package_id for extent in extents]
+
+            output = dict(count=len(ids),results=ids)
+
+            return self._finish_ok(output)
+
+    def spatial_feed(self):
+        from ckanext.spatial.model import PackageExtent
+        extents = Session.query(PackageExtent).all()
+
+        return self._output_geojson(extents)
+
+
+    def _output_geojson(self,extents):
+        from ckanext.spatial.model import PackageExtent
+        from ckan.lib.base import response
+        from shapely.wkb import loads
+        from geojson import Feature, FeatureCollection, dumps
+        output = []
+        for extent in extents:
+            geometry = loads(str(extent.the_geom.geom_wkb))
+            feature = Feature(
+                    id=extent.package_id,
+                    geometry=geometry,
+                    properties={
+                        'package_id': extent.package_id
+                        })
+            output.append(feature)
+
+        response.content_type = 'application/json'
+        return dumps(FeatureCollection(output))
         ids = [extent.package_id for extent in extents]
 
         output = dict(count=len(ids),results=ids)

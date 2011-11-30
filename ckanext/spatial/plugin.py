@@ -32,6 +32,11 @@ class SpatialQuery(SingletonPlugin):
         map.connect('api_spatial_query', '/api/2/search/{register:dataset|package}/geo',
             controller='ckanext.spatial.controllers.api:ApiController',
             action='spatial_query')
+
+        map.connect('/api/geo/{register:dataset|package}',
+            controller='ckanext.spatial.controllers.api:ApiController',
+            action='spatial_feed')
+
         return map
 
     def create(self, package):
