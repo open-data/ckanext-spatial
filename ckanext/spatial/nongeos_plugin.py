@@ -28,8 +28,8 @@ class WMSPreview(SingletonPlugin):
         routes = request.environ.get('pylons.routes_dict')
 
         if routes.get('controller') == 'package' and \
-            routes.get('action') == 'read' and c.pkg.id:
-
+            routes.get('action') == 'resource_read' and c.pkg.id:
+            '''
             for res in c.pkg.resources:
                 if res.format == "WMS":
                     data = {'name': c.pkg.name}
@@ -37,6 +37,16 @@ class WMSPreview(SingletonPlugin):
                         .append(HTML(html.MAP_VIEW % data))
 
                     break
+            '''
+            if c.resource['format'] == 'WMS':
+                data = {'wms_url': c.resource['url']}
+                stream = stream | Transformer('body//div[@id="ckanext-datapreview"]')\
+                    .append(HTML(html.WMS_PREVIEW % data))
+
+                stream = stream | Transformer('head')\
+                    .append(HTML(html.WMS_PREVIEW_EXTRA_HEADER % data))
+                stream = stream | Transformer('body')\
+                    .append(HTML(html.WMS_PREVIEW_EXTRA_FOOTER % data))
 
 
 

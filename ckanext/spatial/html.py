@@ -1,9 +1,3 @@
-MAP_VIEW="""
-<div class="mapview">
-    <a href="/dataset/%(name)s/map">View available WMS layers &raquo;</a>
-</div>
-"""
-
 PACKAGE_MAP="""
 <hr class="cleared" />
 <div class="dataset-map subsection">
@@ -28,6 +22,33 @@ PACKAGE_MAP_EXTRA_FOOTER="""
         })
         //]]>
     </script>
+
+
+"""
+
+WMS_PREVIEW="""
+<div id="wms-preview" class="row span-24">
+    <div id="map" class="span-16"></div>
+    <div id="layers" class="span-8"></div>
+    </div>
+
+"""
+
+
+WMS_PREVIEW_EXTRA_HEADER="""
+        <link type="text/css" rel="stylesheet" media="all" href="/ckanext/spatial/css/wms_preview.css" />
+"""
+
+WMS_PREVIEW_EXTRA_FOOTER="""
+        <script type="text/javascript" src="/ckanext/spatial/js/openlayers/OpenLayers_wms_preview.js"></script>
+        <script type="text/javascript" src="/ckanext/spatial/js/wms_preview.js"></script>
+      <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function(){
+            CKAN.WMSPreview.setup("%(wms_url)s");
+        })
+        //]]>
+      </script>
 
 
 """
