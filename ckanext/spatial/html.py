@@ -28,8 +28,6 @@ PACKAGE_MAP_EXTRA_FOOTER="""
         })
         //]]>
     </script>
-
-
 """
 
 SPATIAL_SEARCH_FORM_EXTRA_HEADER="""
@@ -67,3 +65,52 @@ SPATIAL_SEARCH_FORM="""
     <div id="spatial-search-map-attribution">Map data CC-BY-SA by <a href="http://openstreetmap.org">OpenStreetMap</a> | Tiles by <a href="http://www.mapquest.com">MapQuest</a></div>
 </div>
 """
+
+PACKAGE_MAP_EXTRA_HEADER="""
+    <link type="text/css" rel="stylesheet" media="all" href="/ckanext/spatial/css/dataset_map.css" />
+"""
+
+PACKAGE_MAP_EXTRA_FOOTER="""
+    <script type="text/javascript" src="/ckanext/spatial/js/openlayers/OpenLayers_dataset_map.js"></script>
+    <script type="text/javascript" src="/ckanext/spatial/js/dataset_map.js"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function(){
+            CKAN.DatasetMap.extent = '%(extent)s';
+            CKAN.DatasetMap.setup();
+        })
+        //]]>
+    </script>
+"""
+
+PACKAGE_EDIT_FORM_NAV="""
+<li><a href="#section-spatial">Spatial</a></li>
+"""
+
+PACKAGE_EDIT_FORM="""
+<fieldset id="spatial">
+    <h3>Geographic extent</h3>
+<div id="dataset-map-container"></div>
+<div id="dataset-map-attribution">Map data CC-BY-SA by <a href="http://openstreetmap.org">OpenStreetMap</a> | Tiles courtesy of <a href="http://www.mapquest.com">MapQuest</a></div>
+
+</fieldset>
+"""
+
+
+PACKAGE_EDIT_FORM_EXTRA_HEADER="""
+"""
+PACKAGE_EDIT_FORM_EXTRA_FOOTER="""
+    <script type="text/javascript" src="/ckanext/spatial/js/openlayers/OpenLayers_dataset_map.js"></script>
+    <script type="text/javascript" src="/ckanext/spatial/js/dataset_map.js"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        $(document).ready(function(){
+            CKAN.DatasetMap.extent = '%(geom)s';
+            CKAN.DatasetMap.setup();
+        })
+        //]]>
+    </script>
+
+
+"""
+

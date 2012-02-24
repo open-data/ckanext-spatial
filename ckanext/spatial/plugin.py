@@ -33,6 +33,7 @@ class SpatialMetadata(SingletonPlugin):
 
     implements(IPackageController, inherit=True)
     implements(IConfigurable, inherit=True)
+    implements(IGenshiStreamFilter)
 
     def configure(self, config):
 
@@ -84,6 +85,31 @@ class SpatialMetadata(SingletonPlugin):
 
     def delete(self, package):
         save_package_extent(package.id,None)
+
+    def filter(self, stream):
+        from pylons import request, tmpl_context as c
+        routes = request.environ.get('pylons.routes_dict')
+        if routes.get('controller') == 'package' and \
+            routes.get('action') == 'edit' or routes.get('action') == 'new':
+
+            data = {
+                'geom': c.pkg.extras.get('spatial',None),
+            }
+            stream = stream | Transformer('body//ul[@class="dataset-edit-nav"]')\
+                .append(HTML(html.PACKAGE_EDIT_FORM_NAV))
+
+            # TODO: Transformers don't seem to work inside forms!
+            stream = stream | Transformer('body//fieldset[@id="extras"]')\
+                .after(HTML(html.PACKAGE_EDIT_FORM))
+               
+            stream = stream | Transformer('head')\
+                .append(HTML(html.PACKAGE_EDIT_FORM_EXTRA_HEADER % data))
+            stream = stream | Transformer('body')\
+                .append(HTML(html.PACKAGE_EDIT_FORM_EXTRA_FOOTER % data))
+
+        return stream
+
+
 
 class SpatialQuery(SingletonPlugin):
 
